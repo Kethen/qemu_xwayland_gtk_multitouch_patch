@@ -100,23 +100,23 @@ long g_signal_connect_data(void *instance, char *detailed_signal, void *c_handle
 }
 
 static char *paths[] = {
-	"/usr/lib64/libgtk-4.so.1",
-	"/usr/lib/libgtk-4.so.1",
-	"/usr/lib32/libgtk-4.so.1"
+	"/usr/lib64/libgtk-3.so.0",
+	"/usr/lib/libgtk-3.so.0",
+	"/usr/lib32/libgtk-3.so.0"
 };
 
 static void load_functions(){
-	void *libgtk4 = NULL;
+	void *libgtk3 = NULL;
 	for (int i = 0;i < sizeof(paths) / sizeof(char *);i++){
-		libgtk4 = dlopen(paths[i], RTLD_NOW);
-		if (libgtk4 != NULL){
-			OUT("libgtk4 opened at %s\n", paths[i]);
+		libgtk3 = dlopen(paths[i], RTLD_NOW);
+		if (libgtk3 != NULL){
+			OUT("libgtk-3 opened at %s\n", paths[i]);
 			break;
 		}
 		ERR("cannot open %s, %s\n", paths[i], dlerror());
 	}
-	if (libgtk4 == NULL){
-		ERR("failed opening libgtk-4\n");
+	if (libgtk3 == NULL){
+		ERR("failed opening libgtk-3\n");
 		exit(1);
 	}
 	#define FETCH_FUNCTION(lib, name) { \
@@ -127,7 +127,7 @@ static void load_functions(){
 		} \
 	}
 
-	FETCH_FUNCTION(libgtk4, g_signal_connect_data);
+	FETCH_FUNCTION(libgtk3, g_signal_connect_data);
 }
 
 __attribute__((constructor))
